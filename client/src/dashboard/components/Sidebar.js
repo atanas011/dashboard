@@ -11,9 +11,13 @@ const Sidebar = () => {
 
     const { pathname } = useLocation()
 
-    const paths = ['', 'news', 'profile', 'writers', 'writer/add']
-    const icons = [<AiFillDashboard />, <BiNews />, <ImProfile />, <FiUsers />, <AiOutlinePlus />]
-    const titles = ['Dashboard', 'News', 'Profile', 'Writers', 'Add Writer']
+    const user = 'Admin' // User
+
+    const paths = ['', 'news', 'news/create', 'profile', 'writers', 'writers/add']
+    const icons = [<AiFillDashboard />, <BiNews />, <AiOutlinePlus />, <ImProfile />, <FiUsers />, <AiOutlinePlus />]
+    const titles = ['Dashboard', 'News', 'Create News', 'Profile', 'Writers', 'Add Writer']
+
+    const nums = user === 'Admin' ? [0, 1, 2, 3, 4, 5] : [0, 1, 2, 3]
 
     return (
         <div className='w-[250px] h-screen fixed left-0 top-0 bg-white dark:bg-stone-500'>
@@ -26,7 +30,7 @@ const Sidebar = () => {
             </div>
 
             <ul className='px-3 flex flex-col gap-y-1 font-medium'>
-                {[0, 1, 2, 3, 4].map(i =>
+                {nums.map(i =>
                     <li key={i}>
                         <Link to={`/${paths[i]}`} className={
                             `${pathname === `/${paths[i]}` ? 'bg-indigo-500 text-white' :

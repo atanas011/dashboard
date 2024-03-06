@@ -1,6 +1,6 @@
-### Layout (Sidebar, Header) | Protected Routes
+### Layout (Main)
 
 - Clone repo to local
 - cmd: cd client && npm i && npm start
 - (browser: http://localhost:3000)
-- In Protected & Admin change user/role, and in address bar test routes: /, /admin
+- Test all from sidebar, as Admin and Writer (change user in Sidebar, Panel & Admin)

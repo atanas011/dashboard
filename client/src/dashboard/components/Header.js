@@ -3,8 +3,8 @@ import avatar from '../../assets/avatar.png'
 const Header = () => {
 
   return (
-    <div className='pl-4 ml-[250px] fixed w-[calc(100vw-250px)] top-4'>
-      <header className='rounded-l h-20 flex justify-between items-center p-4 bg-white dark:bg-yellow-100'>
+    <div className='pl-4 fixed w-[calc(100vw-250px)] z-10'>
+      <header className='border-b-2 border-green-500 h-20 flex justify-between items-center p-4 bg-white dark:bg-yellow-100'>
 
         <input
           type='text'
