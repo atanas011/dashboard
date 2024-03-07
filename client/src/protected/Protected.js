@@ -1,10 +1,14 @@
 import { Outlet, Navigate } from 'react-router-dom'
+import { useContext } from 'react'
+
+import storeContext from '../context/storeContext'
 
 const Protected = () => {
 
-  const user = {} // null
+  const { store } = useContext(storeContext)
+  // console.log(store)
 
-  return user ? <Outlet /> : <Navigate to='/login' />
+  return store.user ? <Outlet /> : <Navigate to='/login' />
 }
 
 export default Protected

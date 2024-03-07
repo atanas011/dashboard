@@ -1,6 +1,11 @@
+import { useContext } from 'react'
+
 import avatar from '../../assets/avatar.png'
+import storeContext from '../../context/storeContext'
 
 const Header = () => {
+
+  const { store } = useContext(storeContext)
 
   return (
     <div className='pl-4 fixed w-[calc(100vw-250px)] z-10'>
@@ -14,8 +19,8 @@ const Header = () => {
 
         <div className='mr-4 flex gap-x-2'>
           <div className='flex flex-col items-end'>
-            <span>Pera Peric</span>
-            <span>Admin</span>
+            <span>{store.user.name}</span>
+            <span>{store.user.role}</span>
           </div>
           <img className='w-10 h-10 rounded-full' src={avatar} alt='avatar' />
         </div>

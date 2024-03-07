@@ -1,10 +1,13 @@
 import { Outlet, Navigate } from 'react-router-dom'
+import { useContext } from 'react'
+
+import storeContext from '../context/storeContext'
 
 const Admin = () => {
 
-  const user = { role: 'admin' } // user
+  const { store } = useContext(storeContext)
 
-  return (user.role === 'admin') ? <Outlet /> : <Navigate to='/access-restricted' />
+  return store.user.role === 'Admin' ? <Outlet /> : <Navigate to='/access-restricted' />
 }
 
 export default Admin

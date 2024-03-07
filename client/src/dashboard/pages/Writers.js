@@ -1,10 +1,39 @@
+import { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FaEye } from 'react-icons/fa'
+import axios from 'axios'
+
+import baseUrl from '../../config'
+import storeContext from '../../context/storeContext'
+import user from '../../assets/user.jpg'
 
 const Writers = () => {
-  
+
+  const { store } = useContext(storeContext)
+
+  const [writers, setWriters] = useState([])
+
+  useEffect(() => { //this renders without any action on this page!
+
+    (async () => {
+      try {
+        const { data } = await axios.get(`${baseUrl}/api/writers`, {
+          headers: {
+            'Authorization': `Bearer ${store.token}`
+          }
+        })
+        setWriters(data.writers)
+
+      } catch (error) {
+        console.log(error)
+      }
+    })()
+    
+  }, [store.token])
+
   return (
     <div className='bg-white rounded-md'>
+      {/* {console.log(writers.length)} */}
 
       <div className='flex justify-between p-4'>
         <h2 className='text-xl font-medium'>Writers</h2>
@@ -30,21 +59,25 @@ const Writers = () => {
           </thead>
 
           <tbody>
-            {[1, 2, 3, 4, 5].map(i =>
+            {writers.map((w, i) =>
               <tr key={i} className='bg-white border-b'>
-                <td className='px-6 py-4'>{i}</td>
-                <td className='px-6 py-4'>Pera Peric</td>
-                <td className='px-6 py-4'>Sports</td>
-                <td className='px-6 py-4'>Writer</td>
+                <td className='px-6 py-4'>{i + 1}</td>
+                <td className='px-6 py-4'>{w.name}</td>
+                <td className='px-6 py-4'>{w.category}</td>
+                <td className='px-6 py-4'>{w.role}</td>
                 <td className='px-6 py-4'>
-                  <img className='w-[40px] h-[40px]' alt='profile-img'
-                    src='https://res.cloudinary.com/dpv5tcps3/image/upload/v1704186581/happyfruits/avatars/ntmjeoxprhkddiwcbzal.jpg'
+                  <img className='w-[40px] h-[40px]'
+                    src={user} alt='user'
                   />
                 </td>
-                <td className='px-6 py-4'>pera@yahoo.com</td>
+                <td className='px-6 py-4'>{w.email}</td>
                 <td className='px-6 py-4'>
                   <div className='flex justify-start items-center'>
-                    <Link className='ps-5 text-green-500 rounded hover:shadow-lg hover:shadow-green-500/50' title='View'><FaEye /></Link>
+                    <Link
+                      title='View'
+                      to={`/writer/${w.name.replace(/\s/g, '')}`}
+                      className='ps-5 text-green-500 rounded hover:shadow-lg hover:shadow-green-500/50'
+                    ><FaEye /></Link>
                   </div>
                 </td>
               </tr>
