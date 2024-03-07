@@ -3,14 +3,16 @@ import bodyParser from 'body-parser'
 import cors from 'cors'
 
 import { connectDB } from './database.js'
-import { router } from './routes/userRoutes.js'
+import { userRouter } from './routes/userRoutes.js'
+import { newsRouter } from './routes/newsRoutes.js'
 
 const app = express()
 
 app.use(bodyParser.json())
 app.use(cors())
 
-app.use('/api', router)
+app.use('/api', userRouter)
+app.use('/api', newsRouter)
 
 const PORT = process.env.PORT
 

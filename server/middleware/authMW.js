@@ -3,8 +3,6 @@ import jwt from 'jsonwebtoken'
 export const authToken = (req, res, next) => {
 
     const { authorization } = req.headers
-    // console.log(req.headers)
-    // console.log(authorization)
     if (!authorization) return res.sendStatus(401)
 
     const token = authorization.split('Bearer ')[1]
@@ -13,7 +11,6 @@ export const authToken = (req, res, next) => {
     try {
         const user = jwt.verify(token, process.env.JWT_SECRET)
         req.user = user
-        // console.log(req.user)
         next()
 
     } catch (err) {

@@ -13,7 +13,7 @@ const Writers = () => {
 
   const [writers, setWriters] = useState([])
 
-  useEffect(() => { //this renders without any action on this page!
+  useEffect(() => {
 
     (async () => {
       try {

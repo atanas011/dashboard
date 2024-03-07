@@ -19,16 +19,15 @@ const Login = () => {
     })
 
     const inputHandler = e => {
-        setState({ ...state, [e.target.id]: e.target.value }) // id must be assigned to input!
+        setState({ ...state, [e.target.id]: e.target.value })
     }
 
     const submitHandler = async e => {
         e.preventDefault()
-        // console.log(state)
+
         try {
             setLoader(true)
             const { data } = await axios.post(`${baseUrl}/api/login`, state)
-            // console.log(data)
             setLoader(false)
             localStorage.setItem('token', data.token)
             dispatch({

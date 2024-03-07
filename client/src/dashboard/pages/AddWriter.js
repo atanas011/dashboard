@@ -66,7 +66,7 @@ const AddWriter = () => {
               value={state.name}
               onChange={inputHandler}
               className='px-3 py-2 h-10 rounded-md outline-0 border border-gray-300 focus:border-green-500'
-            /> {/* for toast error msgs to work this shouldn't be required */}
+            />
           </div>
 
           <div className='flex flex-col gap-y-2'>

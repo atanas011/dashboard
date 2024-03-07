@@ -12,7 +12,6 @@ export const login = async (req, res) => {
 
     try {
         const user = await User.findOne({ email }).select('+password')
-        // console.log(user) // node console
         if (!user) return res.status(404).json({ message: 'User not found' })
 
         const match = await bcrypt.compare(password, user.password)
@@ -49,7 +48,6 @@ export const getWriters = async (req, res) => {
 
 export const addWriter = async (req, res) => {
 
-    // console.log(req.body)
     const { name, category, email, password } = req.body
 
     if (!name) return res.status(400).json({ message: 'Please provide name' })

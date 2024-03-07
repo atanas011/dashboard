@@ -9,7 +9,7 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
-    password: { // 123 > bcrypt-generator.com
+    password: {
         type: String,
         select: false,
         required: true

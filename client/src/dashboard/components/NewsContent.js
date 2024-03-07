@@ -26,8 +26,8 @@ const NewsContent = ({ flag }) => {
                             <td className='px-6 py-4'>{i}</td>
                             <td className='px-6 py-4'>Lorem ipsum dolor sit amet...</td>
                             <td className='px-6 py-4'>
-                                <img className='w-[40px] h-[40px]' alt='news-img'
-                                    src='https://res.cloudinary.com/dpv5tcps3/image/upload/v1708599466/news/g1rq2mu77vkftsca6cbc.png'
+                                <img className='w-[40px] h-[40px]' alt='news'
+                                    src='https://res.cloudinary.com/dpv5tcps3/image/upload/v1709841664/dashboard/l5szwqdncqtwikcjxagk.png'
                                 />
                             </td>
                             <td className='px-6 py-4'>Sport</td>
