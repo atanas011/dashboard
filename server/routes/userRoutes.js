@@ -1,6 +1,6 @@
 import { Router } from 'express'
 
-import { login, getWriters, addWriter } from '../controllers/userCtrls.js'
+import { login, getWriters, addWriter } from '../controllers/userCtrl.js'
 import { authToken, authRole } from '../middleware/authMW.js'
 
 export const userRouter = Router()

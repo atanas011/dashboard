@@ -63,6 +63,7 @@ const AddWriter = () => {
               id='name'
               name='name'
               type='text'
+              autoFocus
               value={state.name}
               onChange={inputHandler}
               className='px-3 py-2 h-10 rounded-md outline-0 border border-gray-300 focus:border-green-500'

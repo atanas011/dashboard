@@ -11,8 +11,8 @@ import storeContext from '../../context/storeContext'
 
 const CreateNews = () => {
 
-  const editor = useRef(null)
   const { store } = useContext(storeContext)
+  const editor = useRef(null)
 
   const [title, setTitle] = useState('')
   const [image, setImage] = useState('')
@@ -26,7 +26,6 @@ const CreateNews = () => {
     const { files } = e.target
 
     if (files.length) {
-      console.log(files)
       setImg(URL.createObjectURL(files[0]))
       setImage(files[0])
     }
@@ -34,9 +33,7 @@ const CreateNews = () => {
 
   const createHandler = async e => {
     e.preventDefault()
-    // console.log(title)
-    // console.log(description)
-    // console.log(image)
+
     const formData = new FormData()
     formData.append('title', title)
     formData.append('description', description)
@@ -50,8 +47,8 @@ const CreateNews = () => {
         }
       })
       setLoader(false)
-      // console.log(data)
       toast.success(data.message)
+
     } catch (err) {
       setLoader(false)
       toast.error(err.response.data.message)
@@ -95,7 +92,13 @@ const CreateNews = () => {
                 </div>
               }
             </label>
-            <input onChange={imageHandler} className='hidden' type='file' id='image' />
+            <input
+              id='image'
+              name='image'
+              className='hidden'
+              onChange={imageHandler}
+              type='file'
+            />
           </div>
 
           <div className='flex flex-col gap-y-2 mb-6'>
@@ -104,8 +107,10 @@ const CreateNews = () => {
               <span title='Select Images' className='text-2xl cursor-pointer' onClick={() => setShow(true)}>
                 <FaImage />
               </span>
+              {show && <Gallery setShow={setShow} store={store} />}
             </div>
           </div>
+
           <JoditEditor
             ref={editor}
             tabIndex={1}
@@ -123,8 +128,6 @@ const CreateNews = () => {
 
         </form>
       </div>
-
-      {show && <Gallery setShow={setShow} images={[]} />}
 
     </div>
   )
