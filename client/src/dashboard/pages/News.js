@@ -1,9 +1,18 @@
+import { useState } from 'react'
 import { Link } from 'react-router-dom'
 
 import NewsContent from '../components/NewsContent'
 import Pagination from '../components/Pagination'
+import FilterNews from '../components/FilterNews'
 
 const News = () => {
+
+  const [news, setNews] = useState([])
+  const [allNews, setAllNews] = useState([])
+
+  const [page, setPage] = useState(1)
+  const [pages, setPages] = useState(0)
+  const [perPage, setPerPage] = useState(5)
 
   const flag = true
 
@@ -18,23 +27,29 @@ const News = () => {
         >Create News</Link>
       </div>
 
-      <div className='px-4 py-3 flex gap-x-3'>
-        <select className='px-3 py-2 h-10 rounded-md outline-0 border border-gray-300 focus:border-green-500'>
-          <option value=''>Select Type</option>
-          <option value='pending'>Pending</option>
-          <option value='active'>Active</option>
-          <option value='inactive'>Inactive</option>
-        </select>
-        <input
-          type='text'
-          placeholder='Search News'
-          className='px-3 py-2 h-10 rounded-md outline-0 border border-gray-300 focus:border-green-500'
-        />
-      </div>
+      <FilterNews
+        allNews={allNews}
+        setNews={setNews}
+        setPage={setPage}
+      />
 
-      <NewsContent flag={flag} />
+      <NewsContent
+        news={news}
+        setNews={setNews}
+        setAllNews={setAllNews}
+        page={page}
+        setPages={setPages}
+        perPage={perPage}
+        flag={flag}
+      />
 
-      <Pagination />
+      <Pagination
+        page={page}
+        setPage={setPage}
+        pages={pages}
+        PerPage={perPage}
+        setPerPage={setPerPage}
+      />
 
     </div>
   )

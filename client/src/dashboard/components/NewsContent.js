@@ -1,7 +1,38 @@
-import { Link } from 'react-router-dom'
 import { FaEye, FaEdit, FaTrash } from 'react-icons/fa'
+import { useContext, useEffect } from 'react'
+import { Link } from 'react-router-dom'
+import { convert } from 'html-to-text'
+import axios from 'axios'
 
-const NewsContent = ({ flag }) => {
+import storeContext from '../../context/storeContext'
+import baseUrl from '../../config'
+
+const NewsContent = ({ news, setNews, setAllNews, page, setPages, perPage, flag }) => {
+
+    const { store } = useContext(storeContext)
+
+    useEffect(() => {
+
+        (async () => {
+            try {
+                const { data } = await axios.get(`${baseUrl}/api/news`, {
+                    headers: {
+                        'Authorization': `Bearer ${store.token}`
+                    }
+                })
+                setNews(data.news)
+                setAllNews(data.news)
+
+            } catch (err) {
+                console.log(err)
+            }
+        })()
+
+    }, [setNews, setAllNews, store.token])
+
+    useEffect(() => {
+        if (news.length) setPages(Math.ceil(news.length / perPage))
+    }, [news, setPages, perPage])
 
     return (
         <div className='relative overflow-x-auto p-4'>
@@ -21,21 +52,22 @@ const NewsContent = ({ flag }) => {
                 </thead>
 
                 <tbody>
-                    {[1, 2, 3, 4].map(i =>
+                    {news.length > 0 && news.slice((page - 1) * perPage, page * perPage).map((n, i) =>
                         <tr key={i} className='bg-white border-b'>
-                            <td className='px-6 py-4'>{i}</td>
-                            <td className='px-6 py-4'>Lorem ipsum dolor sit amet...</td>
+                            <td className='px-6 py-4'>{i + 1 + (page - 1) * perPage}</td>
+                            <td className='px-6 py-4'>{n.title.length > 15 ? n.title.slice(0, 15) + '...' : n.title}</td>
                             <td className='px-6 py-4'>
-                                <img className='w-[40px] h-[40px]' alt='news'
-                                    src='https://res.cloudinary.com/dpv5tcps3/image/upload/v1709841664/dashboard/l5szwqdncqtwikcjxagk.png'
-                                />
+                                <img className='w-[40px] h-[40px]' src={n.image} alt='news' />
                             </td>
-                            <td className='px-6 py-4'>Sport</td>
-                            <td className='px-6 py-4'>Ut enim ad minim veniam...</td>
-                            <td className='px-6 py-4'>January 31, 2024</td>
+                            <td className='px-6 py-4'>{n.category}</td>
+                            <td className='px-6 py-4'>{convert(n.description).slice(0, 18)}...</td>
+                            <td className='px-6 py-4'>{n.date}</td>
                             <td className='px-6 py-4'>
-                                <span className='px-2 py-[2px] bg-green-100 text-green-800 rounded-lg text-xs cursor-pointer'>
-                                    Active
+                                <span className={`px-2 py-[2px] rounded-lg text-xs cursor-pointer
+                                        ${n.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                                        n.status === 'active' ? 'bg-green-100 text-green-800' :
+                                            'bg-red-100 text-red-800'}`}>
+                                    {n.status}
                                 </span>
                             </td>
                             <td className='px-6 py-4'>

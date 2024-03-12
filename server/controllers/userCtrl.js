@@ -26,7 +26,6 @@ export const login = async (req, res) => {
         }
 
         const token = jwt.sign(obj, process.env.JWT_SECRET, { expiresIn: process.env.JWT_EXP_TIME })
-
         res.status(200).json({ token })
 
     } catch (err) {
@@ -38,7 +37,6 @@ export const getWriters = async (req, res) => {
 
     try {
         const writers = await User.find({ role: 'Writer' }).sort({ createdAt: -1 })
-
         res.status(200).json({ writers })
 
     } catch (err) {

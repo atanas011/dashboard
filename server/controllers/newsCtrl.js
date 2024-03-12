@@ -83,3 +83,16 @@ export const addImages = async (req, res) => {
         res.sendStatus(500)
     }
 }
+
+export const getNews = async (req, res) => {
+
+    const { id, role } = req.user
+
+    try {
+        const news = await News.find(role === 'Admin' ? {} : { writerId: id }).sort({ createdAt: -1 })
+        res.status(200).json({ news })
+
+    } catch (err) {
+        res.sendStatus(500)
+    }
+}

@@ -1,12 +1,20 @@
 import { Link } from 'react-router-dom'
-import { useContext } from 'react'
+import { useContext, useState } from 'react'
 
 import NewsContent from '../components/NewsContent'
 import storeContext from '../../context/storeContext'
 
-const AdminIndex = () => {
+const Panel = () => {
 
     const { store } = useContext(storeContext)
+
+    const [news, setNews] = useState([])
+    const [allNews, setAllNews] = useState([])
+
+    const [page, setPage] = useState(1)
+    const [pages, setPages] = useState(0)
+    const [perPage, setPerPage] = useState(5)
+
     const flag = false
 
     const qty = [5, 10, 5, 5]
@@ -33,11 +41,19 @@ const AdminIndex = () => {
                     <Link>View All</Link>
                 </div>
 
-                <NewsContent flag={flag} />
+                <NewsContent
+                    news={news}
+                    setNews={setNews}
+                    setAllNews={setAllNews}
+                    page={page}
+                    setPages={setPages}
+                    perPage={perPage}
+                    flag={flag}
+                />
 
             </div>
         </div>
     )
 }
 
-export default AdminIndex
+export default Panel
