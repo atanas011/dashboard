@@ -6,6 +6,7 @@ import Layout from './dashboard/components/Layout'
 import Panel from './dashboard/pages/Panel'
 import News from './dashboard/pages/News'
 import CreateNews from './dashboard/pages/CreateNews'
+import UpdateNews from './dashboard/pages/UpdateNews'
 import Profile from './dashboard/pages/Profile'
 import Restricted from './dashboard/pages/Restricted'
 import Admin from './protected/Admin'
@@ -26,6 +27,7 @@ function App() {
             <Route index element={<Panel />} />
             <Route path='news' element={<News />} />
             <Route path='news/create' element={<CreateNews />} />
+            <Route path='news/update/:id' element={<UpdateNews />} />
             <Route path='profile' element={<Profile />} />
             <Route path='access-restricted' element={<Restricted />} />
 

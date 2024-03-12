@@ -1,15 +1,19 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { AiOutlineClose } from 'react-icons/ai'
 import { MdCloudUpload } from 'react-icons/md'
 import copy from 'copy-text-to-clipboard'
 import toast from 'react-hot-toast'
 import axios from 'axios'
 
+import storeContext from '../../context/storeContext'
 import baseUrl from '../../config'
 
-const Gallery = ({ setShow, store }) => {
+const Gallery = ({ setShow }) => {
+
+    const { store } = useContext(storeContext)
 
     const [images, setImages] = useState([])
+    const [loader, setLoader] = useState(false)
 
     useEffect(() => {
 
@@ -29,7 +33,7 @@ const Gallery = ({ setShow, store }) => {
             }
         })()
 
-    })
+    }, [images, store.token])
 
     const imagesHandler = async e => {
 
@@ -40,17 +44,20 @@ const Gallery = ({ setShow, store }) => {
             for (let i = 0; i < files.length; i++) {
                 formData.append('images', files[i])
             }
-
+            
+            setLoader(true)
             const { data } = await axios.post(`${baseUrl}/api/images/add`, formData, {
                 headers: {
                     'Authorization': `Bearer ${store.token}`
                 }
             })
 
+            setLoader(false)
             setImages([...images, data.images])
             toast.success(data.message)
 
         } catch (err) {
+            setLoader(false)
             toast.error(err.response.data.message)
         }
     }
@@ -89,7 +96,7 @@ const Gallery = ({ setShow, store }) => {
                     />
 
                     <div className='grid grid-cols-4 gap-x-2 mt-3'>
-                        {images.length > 0 && images.map((img, i) =>
+                        {loader ? <p>Uploading...</p> : images.length > 0 && images.map((img, i) =>
                             <div key={i} title='Copy URL' className='cursor-pointer mt-2' onClick={() => copyUrl(img.url)}>
                                 <img src={img.url} alt='img' className='w-full h-[100px]' />
                             </div>

@@ -1,7 +1,8 @@
 import { FaEye, FaEdit, FaTrash } from 'react-icons/fa'
-import { useContext, useEffect } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
 import { convert } from 'html-to-text'
+import toast from 'react-hot-toast'
 import axios from 'axios'
 
 import storeContext from '../../context/storeContext'
@@ -10,6 +11,8 @@ import baseUrl from '../../config'
 const NewsContent = ({ news, setNews, setAllNews, page, setPages, perPage, flag }) => {
 
     const { store } = useContext(storeContext)
+
+    const [status, setStatus] = useState('')
 
     useEffect(() => {
 
@@ -28,11 +31,28 @@ const NewsContent = ({ news, setNews, setAllNews, page, setPages, perPage, flag 
             }
         })()
 
-    }, [setNews, setAllNews, store.token])
+    }, [setNews, setAllNews, store.token, status])
 
     useEffect(() => {
         if (news.length) setPages(Math.ceil(news.length / perPage))
     }, [news, setPages, perPage])
+
+    const updateStatus = async (status, id) => {
+
+        try {
+            setStatus(id)
+            const { data } = await axios.put(`${baseUrl}/api/news/update-status/${id}`, { status }, {
+                headers: {
+                    'Authorization': `Bearer ${store.token}`
+                }
+            })
+            setStatus('')
+            toast.success(data.message)
+
+        } catch (err) {
+            setStatus('')
+        }
+    }
 
     return (
         <div className='relative overflow-x-auto p-4'>
@@ -63,22 +83,28 @@ const NewsContent = ({ news, setNews, setAllNews, page, setPages, perPage, flag 
                             <td className='px-6 py-4'>{convert(n.description).slice(0, 18)}...</td>
                             <td className='px-6 py-4'>{n.date}</td>
                             <td className='px-6 py-4'>
-                                <span className={`px-2 py-[2px] rounded-lg text-xs cursor-pointer
+                                <span
+                                    className={`px-2 py-[2px] rounded-lg text-xs ${store.user.role === 'Admin' && 'cursor-pointer'}
                                         ${n.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                                        n.status === 'active' ? 'bg-green-100 text-green-800' :
-                                            'bg-red-100 text-red-800'}`}>
-                                    {n.status}
+                                            n.status === 'active' ? 'bg-green-100 text-green-800' :
+                                                'bg-red-100 text-red-800'}`}
+                                    onClick={store.user.role !== 'Admin' ? undefined :
+                                        () => updateStatus(`${n.status === 'active' ? 'inactive' : 'active'}`, n._id)} >
+                                    {status === n._id ? 'Loading...' : n.status}
                                 </span>
                             </td>
                             <td className='px-6 py-4'>
-                                <div className='flex justify-center items-center gap-x-4'>
-                                    <Link title='View' className='p-1 text-green-500 rounded hover:shadow-lg hover:shadow-green-500/50'>
+                                <div className='flex justify-start items-start gap-x-4 text-white'>
+                                    <Link title='View' className={`${!flag && 'ms-4'}
+                                        p-1 bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50`}>
                                         <FaEye />
                                     </Link>
-                                    <Link title='Edit' className={`${!flag && 'hidden'} p-1 text-yellow-500 rounded hover:shadow-lg hover:shadow-yellow-500/50`}>
+                                    <Link to={`update/${n._id}`} title='Edit' className={`${!flag && 'hidden'}
+                                        p-1 bg-yellow-500 rounded hover:shadow-lg hover:shadow-yellow-500/50`}>
                                         <FaEdit />
                                     </Link>
-                                    <div title='Delete' className={`${!flag && 'hidden'} p-1 text-red-500 rounded hover:shadow-lg hover:shadow-red-500/50`}>
+                                    <div title='Delete' className={`${!flag && 'hidden'}
+                                        p-1 bg-red-500 rounded hover:shadow-lg hover:shadow-red-500/50`}>
                                         <FaTrash />
                                     </div>
                                 </div>

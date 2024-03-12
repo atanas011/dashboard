@@ -72,11 +72,11 @@ const Writers = () => {
                 </td>
                 <td className='px-6 py-4'>{w.email}</td>
                 <td className='px-6 py-4'>
-                  <div className='flex justify-start items-center'>
+                  <div className='flex justify-start items-center text-white'>
                     <Link
                       title='View'
-                      to={`/writer/${w.name.replace(/\s/g, '')}`}
-                      className='ps-5 text-green-500 rounded hover:shadow-lg hover:shadow-green-500/50'
+                      to={w.name.replace(/\s/g, '')}
+                      className='ms-4 p-1 bg-green-500 rounded hover:shadow-lg hover:shadow-green-500/50'
                     ><FaEye /></Link>
                   </div>
                 </td>
