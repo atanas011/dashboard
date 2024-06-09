@@ -7,7 +7,7 @@
   "scripts": {
     "server": "node --env-file .env --watch-path ./ server.js",
     "client": "npm start --prefix ../client",
-    "start": "node --env-file .env server.js",
+    "start": "node server",
     "build": "npm run build --prefix ../client",
     "dev": "concurrently \"npm run server\" \"npm run client\""
   },

@@ -1,7 +1,6 @@
-### Edit News | Update News Status
+### Website (All News, News Details Page, Categories)
 
 - Clone repo to local
 - Add .env file to server dir
-- cmd: cd client && npm i && cd ../server && npm i && npm run dev
-- browser: http://localhost:3000
-- Log in > News > Edit News > update news status (Admin only)
+- cmd: cd server && node --env-file .env --watch-path ./ server.js
+- Run website - agroweb (http://localhost:3000)

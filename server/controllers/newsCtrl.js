@@ -159,3 +159,79 @@ export const updateNewsStatus = async (req, res) => {
     const news = await News.findByIdAndUpdate(id, { status }, { new: true })
     res.status(200).json({ message: 'News status updated', news })
 }
+
+// website ====================================================================
+
+export const getAllNews = async (req, res) => {
+    try {
+        const categoryNews = await News.aggregate([
+            { $sort: { createdAt: -1 } },
+            { $match: { status: 'active' } },
+            {
+                $group: {
+                    _id: '$category',
+                    news: {
+                        $push: {
+                            _id: '$_id',
+                            title: '$title',
+                            slug: '$slug',
+                            writerName: '$writerName',
+                            image: '$image',
+                            description: '$description',
+                            category: '$category',
+                            date: '$date'
+                        }
+                    }
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    category: '$_id',
+                    news: { $slice: ['$news', 5] }
+                }
+            }
+        ])
+        let news = {}
+        for (let i = 0; i < categoryNews.length; i++) {
+            news[categoryNews[i].category] = categoryNews[i].news
+        }
+        res.status(200).json({ news })
+    } catch (err) {
+        res.sendStatus(500)
+    }
+}
+
+
+export const getNewsDetails = async (req, res) => {
+    const { slug } = req.params
+    try {
+        const news = await News.findOne({ slug })
+        res.status(200).json({ news })
+    } catch (err) {
+        res.sendStatus(500)
+    }
+}
+
+export const getCats = async (req, res) => {
+    try {
+        const cats = await News.aggregate([
+            {
+                $group: {
+                    _id: '$category',
+                    count: { $sum: 1 }
+                }
+            },
+            {
+                $project: {
+                    _id: 0,
+                    category: '$_id',
+                    count: 1
+                }
+            }
+        ])
+        res.status(200).json({ cats })
+    } catch (err) {
+        res.sendStatus(500)
+    }
+}
